@@ -153,14 +153,8 @@ float4 PSHDR10_2020(VSInputTx pin) : SV_Target0
 
 float3 Scaled(float3 color)
 {
-    // Rotate from Rec.709 to Rec.2020 primaries
-    float3 rgb = mul(from709to2020, color);
-
-    // ST.2084 spec defines max nits as 10,000 nits
-    float3 normalized = rgb * paperWhiteNits / 10000.f;
-
-    // Apply ST.2084 curve
-    return LinearToST2084(normalized);
+    float3 normalized = color * paperWhiteNits;
+    return normalized;
 }
 
 float4 PSScaled(VSInputTx pin) : SV_Target0
