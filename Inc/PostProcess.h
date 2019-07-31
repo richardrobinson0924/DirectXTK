@@ -147,21 +147,12 @@ namespace DirectX
     public:
         enum Operator           // Tone-mapping operator
         {
-            None,               // Pass-through
-            Saturate,           // Clamp [0,1]
-            Reinhard,           // x/(1+x)
-            ACESFilmic,
-            Operator_Max
+            None
         };
 
         enum TransferFunction   // Electro-Optical Transfer Function (EOTF)
         {
-            Linear,             // Pass-through
-            SRGB,               // sRGB (Rec.709 and approximate sRGB display curve)
             ST2084, // HDR10 (Rec.2020 color primaries and ST.2084 display curve)
-            Rec2020,
-            Scaled,
-            TransferFunction_Max
         };
 
         explicit ToneMapPostProcess(_In_ ID3D11Device* device);
@@ -176,24 +167,11 @@ namespace DirectX
         // IPostProcess methods.
         void __cdecl Process(_In_ ID3D11DeviceContext* deviceContext, _In_opt_ std::function<void __cdecl()> setCustomState = nullptr) override;
 
-        // Shader control
-        void __cdecl SetOperator(Operator op);
-
-        void __cdecl SetTransferFunction(TransferFunction func);
-
-    #if defined(_XBOX_ONE) && defined(_TITLE)
-        // Uses Multiple Render Targets to generate both HDR10 and GameDVR SDR signals
-        void __cdecl SetMRTOutput(bool value = true);
-    #endif
-
         // Properties
         void __cdecl SetHDRSourceTexture(_In_opt_ ID3D11ShaderResourceView* value);
 
-        // Sets exposure value for LDR tonemap operators
-        void SetExposure(float exposureValue);
-
         // Sets ST.2084 parameter for how bright white should be in nits
-        void SetST2084Parameter(float paperWhiteNits);
+        void SetST2084Parameter(float scalingFactor);
 
     private:
         // Private implementation.

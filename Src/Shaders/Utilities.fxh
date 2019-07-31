@@ -8,16 +8,16 @@
 
 float3 BiasX2(float3 x)
 {
-   return 2.0f * x - 1.0f;
+    return 2.0f * x - 1.0f;
 }
 
 float3 BiasD2(float3 x)
 {
-   return 0.5f * x + 0.5f;
+    return 0.5f * x + 0.5f;
 }
 
 
-// Christian Schüler, "Normal Mapping without Precomputed Tangents", ShaderX 5, Chapter 2.6, pp. 131 – 140
+// Christian Sch??ler, "Normal Mapping without Precomputed Tangents",??ShaderX 5, Chapter 2.6, pp. 131 ??? 140
 // See also follow-up blog post: http://www.thetenthplanet.de/archives/1180
 float3x3 CalculateTBN(float3 p, float3 n, float2 tex)
 {
@@ -53,7 +53,7 @@ float3 TwoChannelNormalX2(float2 normal)
 // Apply the (approximate) sRGB curve to linear values
 float3 LinearToSRGBEst(float3 color)
 {
-    return pow(abs(color), 1/2.2f);
+    return pow(abs(color), 1 / 2.2f);
 }
 
 
@@ -74,6 +74,13 @@ static const float3x3 from709to2020 =
     { 0.6274040f, 0.3292820f, 0.0433136f },
     { 0.0690970f, 0.9195400f, 0.0113612f },
     { 0.0163916f, 0.0880132f, 0.8955950f }
+};
+
+static const float3x3 c_fromP3to2020 =
+{
+    { 0.753845000f, 0.1985930f, 0.0475620f },
+    { 0.045745600f, 0.9417770f, 0.0124772f },
+    { -0.00121055f, 0.0176041f, 0.9836070f }
 };
 
 
@@ -109,5 +116,5 @@ float3 ToneMapACESFilmic(float3 x)
     float c = 2.43f;
     float d = 0.59f;
     float e = 0.14f;
-    return saturate((x*(a*x+b))/(x*(c*x+d)+e));
+    return saturate((x * (a * x + b)) / (x * (c * x + d) + e));
 }
